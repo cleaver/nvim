@@ -1,110 +1,52 @@
 return {
   {
-    "elixir-tools/elixir-tools.nvim",
-    version = "*",
-    event = { "BufReadPre", "BufNewFile" },
-    config = function()
-      local elixir = require("elixir")
-      local elixirls = require("elixir.elixirls")
-
-      elixir.setup({
-        nextls = {
-          enable = true,
-          init_options = {
-            mix_env = "dev",
-            mix_target = "host",
-            experimental = {
-              completions = {
-                enable = false, -- control if completions are enabled. defaults to false
-              },
+    "neovim/nvim-lspconfig",
+    opts = {
+      servers = {
+        elixirls = {
+          keys = {
+            {
+              "<leader>cp",
+              function()
+                local params = vim.lsp.util.make_position_params()
+                LazyVim.lsp.execute({
+                  command = "manipulatePipes:serverid",
+                  arguments = { "toPipe", params.textDocument.uri, params.position.line, params.position.character },
+                })
+              end,
+              desc = "To Pipe",
+            },
+            {
+              "<leader>cP",
+              function()
+                local params = vim.lsp.util.make_position_params()
+                LazyVim.lsp.execute({
+                  command = "manipulatePipes:serverid",
+                  arguments = { "fromPipe", params.textDocument.uri, params.position.line, params.position.character },
+                })
+              end,
+              desc = "From Pipe",
             },
           },
-          on_attach = function(client, bufnr)
-            require("which-key").register({
-              ["<leader>x"] = { name = "Eli[x]ir", _ = "which_key_ignore" },
-            })
-            vim.keymap.set(
-              "n",
-              "<space>xa",
-              ":Elixir nextls alias-refactor<cr>",
-              { desc = "[a]lias refactor", buffer = true, noremap = true }
-            )
-            vim.keymap.set(
-              "n",
-              "<space>xf",
-              ":Elixir nextls from-pipe<cr>",
-              { desc = "[f]rom pipe", buffer = true, noremap = true }
-            )
-            vim.keymap.set(
-              "n",
-              "<space>xt",
-              ":Elixir nextls to-pipe<cr>",
-              { desc = "[t]o pipe", buffer = true, noremap = true }
-            )
-
-            require("lspconfig").tailwindcss.setup({
-              filetypes = { "html", "elixir", "eelixir", "heex" },
-              init_options = {
-                userLanguages = {
-                  elixir = "html-eex",
-                  eelixir = "html-eex",
-                  heex = "html-eex",
-                },
-              },
-              settings = {
-                tailwindCSS = {
-                  experimental = {
-                    classRegex = {
-                      'class[:]\\s*"([^"]*)"',
-                    },
-                  },
-                },
-              },
-            })
-          end,
         },
-        credo = {},
-        elixirls = {
-          enable = false,
-          settings = elixirls.settings({
-            dialyzerEnabled = true,
-            enableTestLenses = false,
-          }),
-          on_attach = function(client, bufnr)
-            require("which-key").add({
-              { "<leader>x", group = "Eli[x]ir" },
-            })
-            vim.keymap.set("n", "<space>xP", ":ElixirFromPipe<cr>", { buffer = true, noremap = true })
-            vim.keymap.set("n", "<space>xp", ":ElixirToPipe<cr>", { buffer = true, noremap = true })
-            vim.keymap.set("n", "<space>xr", ":ElixirRestart<cr>", { buffer = true, noremap = true })
-            vim.keymap.set("n", "<space>xo", ":ElixirOutputPanel<cr>", { buffer = true, noremap = true })
-            vim.keymap.set("v", "<space>xm", ":ElixirExpandMacro<cr>", { buffer = true, noremap = true })
-
-            require("lspconfig").tailwindcss.setup({
-              filetypes = { "html", "elixir", "eelixir", "heex" },
-              init_options = {
-                userLanguages = {
-                  elixir = "html-eex",
-                  eelixir = "html-eex",
-                  heex = "html-eex",
-                },
-              },
-              settings = {
-                tailwindCSS = {
-                  experimental = {
-                    classRegex = {
-                      'class[:]\\s*"([^"]*)"',
-                    },
-                  },
-                },
-              },
-            })
-          end,
-        },
-      })
-    end,
-    dependencies = {
-      "nvim-lua/plenary.nvim",
+      },
     },
+  },
+  {
+    "mfussenegger/nvim-lint",
+    optional = true,
+    opts = function(_, opts)
+      opts.linters_by_ft = {
+        elixir = { "credo" },
+      }
+
+      opts.linters = {
+        credo = {
+          condition = function(ctx)
+            return vim.fs.find({ ".credo.exs" }, { path = ctx.filename, upward = true })[1]
+          end,
+        },
+      }
+    end,
   },
 }
