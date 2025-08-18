@@ -4,3 +4,9 @@
 
 vim.opt.relativenumber = false
 vim.b.completion = true
+
+if vim.fn.getenv("TERM_PROGRAM") == "ghostty" then
+  vim.opt.title = true
+  -- Sets tab/window title to the name of the current working directory (the project folder)
+  vim.opt.titlestring = "nvim " .. vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
+end
