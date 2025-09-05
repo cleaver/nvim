@@ -3,7 +3,7 @@
 -- Add any additional options here
 
 vim.opt.relativenumber = false
-vim.b.completion = true
+vim.g.completion_enabled = true
 
 if vim.fn.getenv("TERM_PROGRAM") == "ghostty" then
   vim.opt.title = true
