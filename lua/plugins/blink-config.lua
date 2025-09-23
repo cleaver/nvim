@@ -21,6 +21,12 @@ return {
     end
 
     vim.keymap.set({ "n" }, "<leader>cx", toggle_completion, { desc = "Toggle Completion" })
+
+    -- Close autocomplete suggestions in insert mode with Ctrl+C
+    vim.keymap.set({ "i" }, "<C-C>", function()
+      require("blink.cmp").hide()
+    end, { desc = "Close Completion" })
+
     opts.enabled = function()
       return vim.b.completion
     end
