@@ -1,10 +1,6 @@
 return {
   "saghen/blink.cmp",
   opts = function(_, opts)
-    if vim.b.completion == nil then
-      vim.b.completion = vim.g.completion_enabled
-    end
-
     local completion_toggle = Snacks.toggle({
       name = "Completion",
       get = function()

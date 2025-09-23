@@ -12,3 +12,15 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.wrap = false
   end,
 })
+
+vim.api.nvim_create_autocmd("BufEnter", {
+  callback = function()
+    if vim.b.completion == nil then
+      if vim.bo.filetype == "markdown" then
+        vim.b.completion = false
+      else
+        vim.b.completion = vim.g.completion_enabled
+      end
+    end
+  end,
+})
