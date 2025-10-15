@@ -10,3 +10,5 @@ if vim.fn.getenv("TERM_PROGRAM") == "ghostty" then
   -- Sets tab/window title to the name of the current working directory (the project folder)
   vim.opt.titlestring = "nvim " .. vim.fn.fnamemodify(vim.fn.getcwd(), ":t")
 end
+
+vim.keymap.set("n", "<leader>xc", "<cmd>Trouble close<cr>", { desc = "Close Trouble window" })
