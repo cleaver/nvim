@@ -16,7 +16,21 @@ vim.api.nvim_create_autocmd("FileType", {
 vim.api.nvim_create_autocmd("BufEnter", {
   callback = function()
     if vim.b.completion == nil then
-      if vim.bo.filetype == "markdown" then
+      local disabled_fts = {
+        TelescopePrompt = true,
+        lazy = true,
+        mason = true,
+        oil = true,
+        ["neo-tree"] = true,
+        fugitive = true,
+        gitcommit = true,
+        help = true,
+        man = true,
+        markdown = true,
+        qf = true,
+        checkhealth = true,
+      }
+      if vim.bo.buftype ~= "" or disabled_fts[vim.bo.filetype] then
         vim.b.completion = false
       else
         vim.b.completion = vim.g.completion_enabled
