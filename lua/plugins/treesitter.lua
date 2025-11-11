@@ -1,7 +1,7 @@
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    dependencies = { "OXY2DEV/markview.nvim" },
+    -- dependencies = { "OXY2DEV/markview.nvim" },
     lazy = false,
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
