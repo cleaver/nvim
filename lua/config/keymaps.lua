@@ -13,3 +13,12 @@ vim.keymap.set("n", "gF", function()
     vim.cmd("normal! gf")
   end
 end, { buffer = 0, desc = "Go to file:line under cursor" })
+
+-- copy Buffer Line. EG: `test/my_app/foo_test.exs:69`
+vim.keymap.set("n", "<leader>bl", function()
+  local path = vim.fn.expand("%") -- relative to cwd
+  local line = vim.fn.line(".")
+  local s = ("%s:%d"):format(path, line)
+  vim.fn.setreg("+", s) -- system clipboard
+  vim.notify("Copied: " .. s)
+end, { desc = "Clipboard buffer file:line" })
