@@ -1,6 +1,9 @@
 -- Keymaps are automatically loaded on the VeryLazy event
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
+
+-- Remap `E` as end of line
+--
 vim.keymap.set("n", "E", "$", { noremap = true })
 
 -- go to file:line under cursor
@@ -94,3 +97,16 @@ vim.keymap.set("n", "<F2>", "@b", { desc = "Play macro @b" })
 vim.keymap.set("n", "<F3>", "@c", { desc = "Play macro @c" })
 vim.keymap.set("n", "<F4>", "@d", { desc = "Play macro @d" })
 vim.keymap.set("n", "<F5>", "@q", { desc = "Play macro @q" })
+
+-- Toggle checkbox
+--
+vim.keymap.set("n", "<leader>tt", function()
+  local line = vim.api.nvim_get_current_line()
+  -- only operate on markdown checkboxes
+  if line:match("^%s*[-*]%s+%[%s%]") then
+    line = line:gsub("^(%s*[-*]%s+)%[%s%]", "%1[x]")
+  elseif line:match("^%s*[-*]%s+%[x%]") then
+    line = line:gsub("^(%s*[-*]%s+)%[x%]", "%1[ ]")
+  end
+  vim.api.nvim_set_current_line(line)
+end, { desc = "Toggle markdown checkbox" })
