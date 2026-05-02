@@ -98,7 +98,11 @@ vim.keymap.set("n", "<F3>", "@c", { desc = "Play macro @c" })
 vim.keymap.set("n", "<F4>", "@d", { desc = "Play macro @d" })
 vim.keymap.set("n", "<F5>", "@q", { desc = "Play macro @q" })
 
--- Toggle checkbox
+-- Delete next word - insert mode
+--
+vim.keymap.set("i", "<C-Delete>", "<C-o>dw", { desc = "Delete next word" })
+
+-- Toggle markdown checkbox
 --
 vim.keymap.set("n", "<leader>tt", function()
   local line = vim.api.nvim_get_current_line()
