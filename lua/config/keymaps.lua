@@ -114,3 +114,15 @@ vim.keymap.set("n", "<leader>tt", function()
   end
   vim.api.nvim_set_current_line(line)
 end, { desc = "Toggle markdown checkbox" })
+
+-- Copy Relative path to clipboard
+--
+vim.keymap.set("n", "<leader>bp", function()
+  vim.fn.setreg("+", vim.fn.expand("%"))
+end, { desc = "Copy file path (relative)" })
+
+-- Copy Absolute path to clipboard
+--
+vim.keymap.set("n", "<leader>bP", function()
+  vim.fn.setreg("+", vim.fn.expand("%:p"))
+end, { desc = "Copy file path (absolute)" })
